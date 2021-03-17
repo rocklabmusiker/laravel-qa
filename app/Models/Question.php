@@ -21,9 +21,23 @@ class Question extends Model
     }
     
     // automatic fill fields slug
+    // https://laravel.com/docs/8.x/eloquent-mutators
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    public function getUrlAttribute() 
+    {
+        return route('questions.show', $this->id);
+    }
+
+    // call this method in view like -> $queston->created_date
+    // I can't use created_at, because of Attribute, first characters begin with At
+    public function getCreatedDateAttribute() 
+    {
+        return $this->created_at->diffForHumans();
+    }
+
 }
