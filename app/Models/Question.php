@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Parsedown;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +31,7 @@ class Question extends Model
 
     public function getUrlAttribute() 
     {
-        return route('questions.show', $this->id);
+        return route('questions.show', $this->slug);
     }
 
     // call this method in view like -> $queston->created_date
@@ -49,6 +50,12 @@ class Question extends Model
             return 'answered';
         } 
         return 'unanswered';
+    }
+
+    public function getBodyHtmlAttribute() 
+    {
+        $parsedown = new Parsedown();
+        return $parsedown->text($this->body);
     }
 
 }
