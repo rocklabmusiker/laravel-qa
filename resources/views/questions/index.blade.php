@@ -10,13 +10,14 @@
                         <div class="d-flex align-items-center">
                             <h2> All Questions</h2>
                             <div class="ml-auto">
-                                <a href="{{ route('questions.create') }}" class="btn btn-outline-secondary">Ask Question</a>
+                                <a href="{{ route('questions.create') }}" class="btn btn-outline-secondary">Ask
+                                    Question</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-body">
-                        
+
                         @include('layouts._messages')
 
                         @foreach ($questions as $question)
@@ -41,18 +42,23 @@
                                             <a href="{{ $question->url }}">{{ $question->title }}</a>
                                         </h3>
                                         <div class="ml-auto">
-                                            @if (Auth::user()->can('update-question', $question))
-                                                <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">
+                                            @can('update', $question)
+                                                <a href="{{ route('questions.edit', $question->id) }}"
+                                                    class="btn btn-sm btn-outline-info">
                                                     Edit
                                                 </a>
-                                            @endif
-                                            @if (Auth::user()->can('delete-question', $question))
-                                                <form method="POST" action="{{ route('questions.destroy', $question->id) }}" class="d-inline">
+
+                                            @endcan
+                                            @can('delete', $question)
+                                                <form method="POST"
+                                                    action="{{ route('questions.destroy', $question->id) }}"
+                                                    class="d-inline">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        onclick="return confirm('Are you sure?')">Delete</button>
                                                 </form>
-                                            @endif
+                                            @endcan
                                         </div>
                                     </div>
                                     <p class="lead">
