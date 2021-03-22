@@ -34,7 +34,7 @@ class QuestionPolicy
     public function delete(User $user, Question $question)
     {
         // remove only by creator and wenn the question don't have any answers
-        return $user->id === $question->user_id && $question->answers < 1;
+        return $user->id === $question->user_id && $question->answers_count < 1;
     }
 
    
