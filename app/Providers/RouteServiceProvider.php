@@ -56,7 +56,8 @@ class RouteServiceProvider extends ServiceProvider
                 // return $question ? $question : abort(404);
 
                 // zweite Variante
-                return Question::where('slug', $slug)->first() ?? abort(404);
+                // "with" is to avoid double queries, here goes from Question to Answer to User 
+                return Question::with('answers.user')->where('slug', $slug)->first() ?? abort(404);
             });
         });
     }
