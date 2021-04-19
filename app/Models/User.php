@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,10 @@ class User extends Authenticatable
         $size = 32;
 
         return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size;
+    }
+
+    public function favorites() 
+    {
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps();
     }
 }
